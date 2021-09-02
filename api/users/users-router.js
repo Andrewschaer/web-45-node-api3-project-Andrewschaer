@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({message: 'There was an error retrieving the users'})
+      res.status(500).json({message: 'There was an error retrieving the users'});
     });
 });
 
@@ -29,7 +29,7 @@ router.get('/:id', validateUserId, (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({message: 'There was an error retrieving the user'})
+      res.status(500).json({message: 'There was an error retrieving the user'});
     });
 });
 
@@ -42,14 +42,22 @@ router.post('/', validateUser, (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({message: 'There was an error adding the user'})
+      res.status(500).json({message: 'There was an error adding the user'});
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+  Users.update(req.params.id, req.body)
+    .then(updatedUser => {
+      res.status(200).json(updatedUser);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({message: 'There was an error updating the user'});
+    });
 });
 
 router.delete('/:id', (req, res) => {
