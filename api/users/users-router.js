@@ -60,9 +60,17 @@ router.put('/:id', validateUserId, validateUser, (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  Users.remove(req.params.id)
+    .then( () => {
+      res.status(200).json(req.user);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({message: 'There was an error deleting the user'});
+    });
 });
 
 router.get('/:id/posts', (req, res) => {
