@@ -22,6 +22,15 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  if (
+    !req.body.name ||
+    typeof req.body.name !== 'string' ||
+    !req.body.name.trim()
+  ) {
+    res.status(400).json({ message: 'missing required name field'});
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {

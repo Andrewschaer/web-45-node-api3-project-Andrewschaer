@@ -24,8 +24,8 @@ router.get('/:id', validateUserId, (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
   Users.getById(req.params.id)
-    .then(thing => {
-      res.status(200).json(thing);
+    .then(user => {
+      res.status(200).json(user);
     })
     .catch(err => {
       console.log(err);
@@ -33,9 +33,17 @@ router.get('/:id', validateUserId, (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+  Users.insert(req.body)
+    .then(newUser => {
+      res.status(200).json(newUser);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({message: 'There was an error adding the user'})
+    });
 });
 
 router.put('/:id', (req, res) => {
