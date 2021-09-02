@@ -36,9 +36,7 @@ function validateUser(req, res, next) {
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
   if (
-    !req.body.text ||
-    typeof req.body.text !== 'string' ||
-    !req.body.text.trim()
+    !req.body.text
   ) {
     res.status(400).json({ message: 'missing required text field'});
   } else {
